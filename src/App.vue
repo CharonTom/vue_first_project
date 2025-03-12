@@ -11,6 +11,11 @@ const addToPokedex = (pokemon) => {
   pokedex.value.push(pokemon);
   console.log("Panier mis à jour :", pokedex.value);
 };
+
+const removeFromPokedex = (pokemonId) => {
+  pokedex.value = pokedex.value.filter((pokemon) => pokemon.id !== pokemonId);
+  console.log("Pokedex mis à jour après suppression :", pokedex.value);
+};
 </script>
 
 <template>
@@ -22,7 +27,7 @@ const addToPokedex = (pokemon) => {
 
   <main class="main">
     <Cards @add-to-pokedex="addToPokedex" />
-    <Pokedex :pokedex="pokedex" />
+    <Pokedex :pokedex="pokedex" @remove-from-pokedex="removeFromPokedex" />
   </main>
 
   <footer class="footer">

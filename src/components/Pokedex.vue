@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, defineEmits } from "vue";
+import {} from "vue";
 
 // Déclaration de la prop "pokedex"
 const props = defineProps({
