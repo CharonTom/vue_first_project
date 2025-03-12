@@ -21,13 +21,15 @@ const removeFromPokedex = (pokemonId) => {
 <template>
   <header class="header">
     <div>This is the Logo</div>
-
     <Nav />
   </header>
 
   <main class="main">
-    <Cards @add-to-pokedex="addToPokedex" />
-    <Pokedex :pokedex="pokedex" @remove-from-pokedex="removeFromPokedex" />
+    <router-view
+      :pokedex="pokedex"
+      @add-to-pokedex="addToPokedex"
+      @remove-from-pokedex="removeFromPokedex"
+    />
   </main>
 
   <footer class="footer">

@@ -1,5 +1,26 @@
-<template><div>This is the future Navlinks</div></template>
+<template>
+  <nav class="nav">
+    <router-link to="/" class="nav-link">Accueil</router-link>
+    <router-link to="/pokedex" class="nav-link">Pokedex</router-link>
+  </nav>
+</template>
 
-<script></script>
+<style scoped>
+.nav {
+  display: flex;
+  gap: 15px;
+  background: lightgray;
+  padding: 10px;
+  border-radius: 8px;
+}
 
-<style></style>
+.nav-link {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  color: blue;
+}
+</style>
