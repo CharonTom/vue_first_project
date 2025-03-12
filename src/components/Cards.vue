@@ -1,11 +1,11 @@
 <script setup>
 import { ref, computed } from "vue";
+const emit = defineEmits(["add-to-pokedex"]);
 
 const pokemons = ref([]);
-const cart = ref([]);
 
 const fetchPokemons = async () => {
-  const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=20");
+  const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=10");
   const data = await response.json();
 
   const detailedPokemons = await Promise.all(
@@ -72,20 +72,29 @@ const filteredPokemons = computed(() => {
   return result;
 });
 
-const addToCart = (pokemon) => {
-  emit("add-to-cart", pokemon);
+const addToPokedex = (pokemon) => {
+  // Émettre l'événement d'ajout au panier
+  emit("add-to-pokedex", pokemon);
 };
 </script>
 
 <template>
   <section>
     <div class="header">
-      <h1>Liste des 20 premiers Pokémon</h1>
+      <h1>Choisissez vos Pokémon</h1>
       <hr />
-      <button @click="fetchPokemons">Charger les Pokémon</button>
+      <div class="actions">
+        <button @click="fetchPokemons">Charger les Pokémon</button>
+        <button @click="toggleHeightSort">
+          Trier par taille
+          <span v-if="sortHeightDirection === 'asc'">▲</span>
+          <span v-else-if="sortHeightDirection === 'desc'">▼</span>
+          <span v-else>↕</span>
+        </button>
+      </div>
     </div>
 
-    <!-- Filtre par type -->
+    <!-- Filtres -->
     <div class="filters" v-if="pokemons.length">
       <label for="type-filter">Filtrer par type :</label>
       <select id="type-filter" v-model="selectedType">
@@ -96,52 +105,40 @@ const addToCart = (pokemon) => {
       </select>
     </div>
 
-    <table v-if="filteredPokemons.length">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Image</th>
-          <th>Nom</th>
-          <!-- En-tête cliquable pour basculer le tri par hauteur -->
-          <th @click="toggleHeightSort" style="cursor: pointer">
-            Hauteur
-            <span v-if="sortHeightDirection === 'asc'">▲</span>
-            <span v-else-if="sortHeightDirection === 'desc'">▼</span>
-            <span v-else>↕</span>
-          </th>
-          <th>Poids</th>
-          <th>Types</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="pokemon in filteredPokemons" :key="pokemon.id">
-          <td>{{ pokemon.id }}</td>
-          <td>
-            <img
-              :src="pokemon.sprites.front_default"
-              @click="addToCart(pokemon)"
-              :alt="pokemon.name"
-              class="pokemon-image"
-            />
-          </td>
-          <td>{{ capitalize(pokemon.name) }}</td>
-          <td>{{ pokemon.height }}</td>
-          <td>{{ pokemon.weight }}</td>
-          <td>
+    <!-- Affichage sous forme de pokedexes -->
+    <div class="card-container" v-if="filteredPokemons.length">
+      <div
+        v-for="pokemon in filteredPokemons"
+        :key="pokemon.id"
+        class="pokemon-card"
+      >
+        <img
+          :src="pokemon.sprites.front_default"
+          @click="addToPokedex(pokemon)"
+          :alt="pokemon.name"
+          class="pokemon-image"
+        />
+        <div class="card-details">
+          <h3>{{ capitalize(pokemon.name) }}</h3>
+          <p><strong>Hauteur :</strong> {{ pokemon.height }}</p>
+          <p><strong>Poids :</strong> {{ pokemon.weight }}</p>
+          <p>
+            <strong>Types :</strong>
             <span v-for="(type, index) in pokemon.types" :key="index">
               {{ capitalize(type.type.name) }}
+              <span v-if="index !== pokemon.types.length - 1">, </span>
             </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </p>
+        </div>
+      </div>
+    </div>
 
     <p v-else class="message">Aucun Pokémon trouvé.</p>
   </section>
 </template>
 
 <style scoped>
-/* Fond de la section avec un dégradé rappelant l'univers Pokémon */
+/* Style général de la section */
 section {
   background: radial-gradient(circle at top left, #fceabb, #f8b500);
   padding: 30px;
@@ -150,7 +147,7 @@ section {
   font-family: "Arial", sans-serif;
 }
 
-/* En-tête avec un effet lumineux */
+/* En-tête et actions */
 .header {
   text-align: center;
   margin-bottom: 20px;
@@ -162,7 +159,13 @@ section {
   margin-bottom: 10px;
 }
 
-/* Bouton flashy avec dégradé et effet de zoom */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
 button {
   background: linear-gradient(45deg, #ffcc00, #ff0000);
   border: 2px solid #fff;
@@ -193,45 +196,50 @@ button:hover {
   font-weight: bold;
 }
 
-/* Tableau stylisé */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 30px;
+/* Conteneur de pokedexes */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Pokedexe Pokémon */
+.pokemon-card {
   background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #ff0000;
   border-radius: 10px;
-  overflow: hidden;
-  border: 5px solid #ff0000;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-table thead {
-  background: linear-gradient(90deg, #ff0000, #ffcc00);
-  color: #fff;
-}
-
-table th,
-table td {
+  width: 200px;
   padding: 15px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
 }
 
-table tbody tr {
-  transition: background 0.3s ease;
+.pokemon-card:hover {
+  transform: translateY(-5px);
 }
 
-table tbody tr:hover {
-  background: rgba(255, 204, 0, 0.3);
-}
-
+/* Image du Pokémon */
 .pokemon-image {
-  width: 80px;
+  width: 100%;
   height: auto;
   display: block;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 
+/* Détails de la pokedexe */
+.card-details h3 {
+  margin: 0 0 10px;
+  font-size: 1.4em;
+}
+
+.card-details p {
+  margin: 5px 0;
+  font-size: 0.9em;
+}
+
+/* Message d'alerte */
 .message {
   color: #ff0000;
   font-weight: bold;

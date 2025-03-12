@@ -1,14 +1,14 @@
 <script setup>
 import { ref } from "vue";
-import List from "./components/List.vue";
-import Cart from "./components/Cart.vue";
+import Cards from "./components/Cards.vue";
+import Pokedex from "./components/Pokedex.vue";
 
-const cart = ref([]);
+const pokedex = ref([]);
 
 // Fonction pour ajouter un Pokémon au panier
-const addToCart = (pokemon) => {
-  cart.value.push(pokemon);
-  console.log("Panier mis à jour :", cart.value);
+const addToPokedex = (pokemon) => {
+  pokedex.value.push(pokemon);
+  console.log("Panier mis à jour :", pokedex.value);
 };
 </script>
 
@@ -18,8 +18,8 @@ const addToCart = (pokemon) => {
   </header>
 
   <main>
-    <List @add-to-cart="addToCart" />
-    <Cart :cart="cart" />
+    <Cards @add-to-pokedex="addToPokedex" />
+    <Pokedex :pokedex="pokedex" />
   </main>
 
   <footer class="footer">
