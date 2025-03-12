@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 const emit = defineEmits(["add-to-pokedex"]);
 
 const pokemons = ref([]);
@@ -21,6 +21,10 @@ const fetchPokemons = async () => {
 
 // Fonction pour capitaliser la première lettre
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
+onMounted(() => {
+  fetchPokemons();
+});
 
 const sortHeightDirection = ref("none");
 const selectedType = ref("all");
@@ -84,7 +88,6 @@ const addToPokedex = (pokemon) => {
       <h1>Choisissez vos Pokémon</h1>
       <hr />
       <div class="actions">
-        <button @click="fetchPokemons">Charger les Pokémon</button>
         <button @click="toggleHeightSort">
           Trier par taille
           <span v-if="sortHeightDirection === 'asc'">▲</span>
@@ -166,10 +169,11 @@ section {
   margin-bottom: 20px;
 }
 
-button {
+button,
+select {
   background: linear-gradient(45deg, #ffcc00, #ff0000);
   border: 2px solid #fff;
-  color: #fff;
+  color: #4e4a4a;
   font-weight: bold;
   padding: 12px 25px;
   cursor: pointer;

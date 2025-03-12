@@ -39,16 +39,18 @@ function removeFromPokedex(pokemonId) {
   max-width: 600px;
   margin: 30px auto;
   background: linear-gradient(135deg, #fefefe, #fff);
-  border: 2px solid #ff0000;
+  border: 1px solid;
   border-radius: 15px;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   font-family: "Arial", sans-serif;
+  display: flex;
+  flex-direction: column;
 }
 
 .pokedex h2 {
   text-align: center;
-  color: #ff0000;
+  color: #000000;
   margin-bottom: 20px;
   font-size: 2em;
 }
@@ -65,7 +67,7 @@ function removeFromPokedex(pokemonId) {
 
 .pokedex li {
   background: #fff;
-  border: 1px solid #ddd;
+  border: 1px solid #e60808;
   border-radius: 10px;
   padding: 15px;
   width: 140px;

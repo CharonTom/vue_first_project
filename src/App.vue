@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import Cards from "./components/Cards.vue";
 import Pokedex from "./components/Pokedex.vue";
+import Nav from "./components/Nav.vue";
 
 const pokedex = ref([]);
 
@@ -14,10 +15,12 @@ const addToPokedex = (pokemon) => {
 
 <template>
   <header class="header">
-    <div>This is the Header</div>
+    <div>This is the Logo</div>
+
+    <Nav />
   </header>
 
-  <main>
+  <main class="main">
     <Cards @add-to-pokedex="addToPokedex" />
     <Pokedex :pokedex="pokedex" />
   </main>
@@ -32,11 +35,20 @@ header {
   background: rgb(255, 252, 78);
   padding: 10px;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 footer {
   background: pink;
   padding: 10px;
   margin-top: 10px;
+}
+
+.main {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
 }
 </style>
