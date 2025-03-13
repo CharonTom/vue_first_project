@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Cards from "./components/Cards.vue";
-import Pokedex from "./components/Pokedex.vue";
+import Inventory from "./components/Inventory.vue";
+import Details from "./components/Details.vue";
 
 const routes = [
   {
@@ -9,8 +10,13 @@ const routes = [
     props: true,
   },
   {
-    path: "/pokedex",
-    component: Pokedex,
+    path: "/inventory",
+    component: Inventory,
+    props: true,
+  },
+  {
+    path: "/details/:id",
+    component: Details,
     props: true,
   },
 ];

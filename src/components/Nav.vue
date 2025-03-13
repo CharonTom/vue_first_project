@@ -1,7 +1,8 @@
 <template>
   <nav class="nav">
     <router-link to="/" class="nav-link">Accueil</router-link>
-    <router-link to="/pokedex" class="nav-link">Pokedex</router-link>
+    <router-link to="/inventory" class="nav-link">Inventory</router-link>
+    <router-link to="/details" class="nav-link">Details</router-link>
   </nav>
 </template>
 

@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import Cards from "./components/Cards.vue";
-import Pokedex from "./components/Pokedex.vue";
+import Pokedex from "./components/Inventory.vue";
 import Nav from "./components/Nav.vue";
 
 const pokedex = ref([]);
